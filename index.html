@@ -1173,19 +1173,29 @@
       endUTC: '20261129T043000Z',   // 11:30 GMT+7
     };
 
-    // Tự động cập nhật tên khách mời nếu link có tham số ?to=TenKhach
-    (function personalizeGuestName() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const guestParam = params.get('to');
-        const guestDisplayEl = document.getElementById('guest-display-name');
-        if (guestParam && guestParam.trim() && guestDisplayEl) {
-          guestDisplayEl.textContent = guestParam.trim();
+          // Tự động cập nhật tên khách mời nếu link có tham số ?to=TenKhach
+      (function personalizeGuestName() {
+        const guestList = {
+          "le-khang": "Bạn Lê Khang",
+          "minh-anh": "Bạn Minh Anh",
+          "ngoc-khanh": "Chị Ngọc Khanh",
+          "hoang-an": "Anh Hoàng An (Andy đâu iu kủa em)",
+          "nguyen-hoang-van-trang": "Chị Vân Trang (Changiuoi của Hồ Thành)",
+          "hoibancuoi": "Hội bàn cuối K22",
+          "thanh-quan": "Bạn Thanh Quân"
+        };
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const guestParam = params.get('to');
+          const guestDisplayEl = document.getElementById('guest-display-name');
+          if (guestParam && guestParam.trim() && guestDisplayEl) {
+            const key = guestParam.trim().toLowerCase();
+            guestDisplayEl.textContent = guestList[key] || guestParam.trim();
+          }
+        } catch (err) {
+          console.warn('URL personalization skipped:', err);
         }
-      } catch (err) {
-        console.warn('URL personalization skipped:', err);
-      }
-    })();
+      })();
 
     /* =========================================================================
        1. CANVAS HIỆU ỨNG CÁNH HOA & HẠT ÁNH NẮNG MỘNG MƠ
@@ -1747,37 +1757,3 @@
   </script>
 
 </body></html>
-<script>
-  const guestList = {
-    "le-khang": "Bạn Lê Khang",
-    "minh-anh": "Bạn Minh Anh",
-    "ngoc-khanh": "Chị Ngọc Khanh",
-    "hoang-an": "Anh Hoàng An (Andy đâu iu kủa em)",
-    "nguyen-hoang-van-trang": "Chị Vân Trang (Changiuoi của Hồ Thành)",
-    "hoibancuoi": "Hội bàn cuối K22",
-    "thanh-quan": "Bạn Thanh Quân"
-  };
-
-  const code = new URLSearchParams(window.location.search).get('to');
-  const fullName = code ? guestList[code.toLowerCase()] : null;
-
-  function lockGuestName() {
-    if (!fullName) return;
-    document.querySelectorAll('*').forEach(el => {
-      if (el.children.length === 0) {
-        const txt = el.textContent.trim();
-        if (txt === 'Bạn thương của thanh xuân' || txt.toLowerCase() === code.toLowerCase()) {
-          el.textContent = fullName;
-        }
-      }
-    });
-  }
-
-  if (fullName) {
-    lockGuestName();
-    const observer = new MutationObserver(lockGuestName);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-    document.addEventListener('click', () => setTimeout(lockGuestName, 100));
-  }
-</script>
-
