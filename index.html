@@ -1748,12 +1748,20 @@
 
 </body></html>
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const guestName = params.get('to');
-  if (guestName) {
+  const guestList = {
+    "lekhang": "Bạn Lê Khang",
+    "minhanh": "Bạn Minh Anh",
+    "chiha": "Chị Hà",
+    "anhnam": "Anh Hoàng Nam",
+    "hoibancuoi": "Hội bàn cuối K22"
+    // Bạn cứ thêm tiếp các dòng theo mẫu: "ma-link": "Tên hiển thị trên thiệp",
+  };
+
+  const code = new URLSearchParams(window.location.search).get('to');
+  if (code && guestList[code.toLowerCase()]) {
     document.querySelectorAll('*').forEach(el => {
       if (el.children.length === 0 && el.textContent.trim() === 'Bạn thương của thanh xuân') {
-        el.textContent = guestName;
+        el.textContent = guestList[code.toLowerCase()];
       }
     });
   }
