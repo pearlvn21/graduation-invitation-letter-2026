@@ -1747,3 +1747,14 @@
   </script>
 
 </body></html>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const guestName = params.get('to');
+  if (guestName) {
+    document.querySelectorAll('*').forEach(el => {
+      if (el.children.length === 0 && el.textContent.trim() === 'Bạn thương của thanh xuân') {
+        el.textContent = guestName;
+      }
+    });
+  }
+</script>
