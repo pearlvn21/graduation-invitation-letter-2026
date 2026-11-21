@@ -1190,7 +1190,7 @@
           const guestDisplayEl = document.getElementById('guest-display-name');
           if (guestParam && guestParam.trim() && guestDisplayEl) {
             const key = guestParam.trim().toLowerCase();
-            guestDisplayEl.textContent = guestList[key] || guestParam.trim();
+            guestDisplayEl.innerHTML = guestList[key] || guestParam.trim();
           }
         } catch (err) {
           console.warn('URL personalization skipped:', err);
