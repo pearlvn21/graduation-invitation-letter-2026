@@ -1756,15 +1756,28 @@
     "nguyen-hoang-van-trang": "Chị Vân Trang (Changiuoi của Hồ Thành)",
     "hoibancuoi": "Hội bàn cuối K22",
     "thanh-quan": "Bạn Thanh Quân"
-    // Bạn cứ thêm tiếp các dòng theo mẫu: "ma-link": "Tên hiển thị trên thiệp",
   };
 
   const code = new URLSearchParams(window.location.search).get('to');
-  if (code && guestList[code.toLowerCase()]) {
+  const fullName = code ? guestList[code.toLowerCase()] : null;
+
+  function lockGuestName() {
+    if (!fullName) return;
     document.querySelectorAll('*').forEach(el => {
-      if (el.children.length === 0 && el.textContent.trim() === 'Bạn thương của thanh xuân') {
-        el.textContent = guestList[code.toLowerCase()];
+      if (el.children.length === 0) {
+        const txt = el.textContent.trim();
+        if (txt === 'Bạn thương của thanh xuân' || txt.toLowerCase() === code.toLowerCase()) {
+          el.textContent = fullName;
+        }
       }
     });
   }
+
+  if (fullName) {
+    lockGuestName();
+    const observer = new MutationObserver(lockGuestName);
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    document.addEventListener('click', () => setTimeout(lockGuestName, 100));
+  }
 </script>
+
